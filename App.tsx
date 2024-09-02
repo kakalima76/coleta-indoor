@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
 import useCoordenadas from "./src/hooks/useCoordenadas"; // Assumindo que você salvou o hook em um arquivo chamado useCoordenadas.ts
 import { Coordenadas } from "./src/interfaces";
 import { Picker } from "@react-native-picker/picker";
@@ -34,24 +40,29 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Escolha um bairro:</Text>
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue) => setSelectedValue(itemValue)}
-        style={styles.picker}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
       >
-        <Picker.Item key={""} label={"selecione"} value={null} />
-        {bairros &&
-          bairros.map((b: string, index) => (
-            <Picker.Item key={index} label={b} value={b} />
+        <Picker
+          selectedValue={selectedValue}
+          onValueChange={(itemValue) => setSelectedValue(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item key={""} label={"selecione"} value={null} />
+          {bairros &&
+            bairros.map((b: string, index) => (
+              <Picker.Item key={index} label={b} value={b} />
+            ))}
+        </Picker>
+
+        {trechos && <Text style={styles.label}>Selecione um trecho:</Text>}
+
+        {trechos &&
+          trechos.map((t: Coordenadas, index: number) => (
+            <Card key={index} data={t}></Card>
           ))}
-      </Picker>
-
-      {trechos && (
-        <Text style={styles.afastamentoTextos}>Selecione um trecho:</Text>
-      )}
-
-      {trechos && trechos.map((t: Coordenadas) => <Card data={t}></Card>)}
-
+      </ScrollView>
       <StatusBar style="auto" />
     </View>
   );
@@ -62,7 +73,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: "20%", // Adicionado para afastar o conteúdo do topo
+    marginTop: "20%",
+  },
+  scrollView: {
+    width: "100%",
+  },
+  scrollContent: {
+    alignItems: "center",
+    paddingBottom: 20,
   },
   centered: {
     flex: 1,
@@ -83,10 +101,5 @@ const styles = StyleSheet.create({
   selectedText: {
     marginTop: 20,
     fontSize: 16,
-  },
-  afastamentoTextos: {
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 25,
   },
 });

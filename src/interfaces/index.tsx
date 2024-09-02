@@ -11,6 +11,7 @@ export interface Coordenadas {
   lat_veiculo: string;
   latlngInicial: string;
   lng_veiculo: string;
+  logradouro: string;
   opcao: string;
   polilinha: string;
   roteiro: string;

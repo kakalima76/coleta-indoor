@@ -21,6 +21,9 @@ const useCoordenadas = () => {
 
         for (let l of lista) {
           coordenadas.push(response.data[l]);
+          coordenadas.sort((a: Coordenadas, b: Coordenadas) =>
+            a.logradouro.localeCompare(b.logradouro)
+          );
           bairros.add(response.data[l].bairro);
         }
 
