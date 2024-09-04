@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "341307780086",
+    "firebase_url": "https://igor-e1982-default-rtdb.firebaseio.com",
+    "project_id": "igor-e1982",
+    "storage_bucket": "igor-e1982.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341307780086:android:21e5485bc04d50114135d7",
+        "android_client_info": {
+          "package_name": "com.nieraldo.coletaindoor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjOg9seQ06XFV9W_FU8H55UwiOCjexKTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

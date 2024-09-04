@@ -1,105 +1,69 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
-import useCoordenadas from "./src/hooks/useCoordenadas"; // Assumindo que você salvou o hook em um arquivo chamado useCoordenadas.ts
-import { Coordenadas } from "./src/interfaces";
-import { Picker } from "@react-native-picker/picker";
-import Card from "./src/componentes/card";
+import "react-native-gesture-handler";
+import React, { useContext, useEffect, useRef } from "react";
+import { TelemetriaContext, TelemetriaProvider } from "./src/contextos";
+import DrawerRoutes from "./src/rotas";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import * as Notifications from "expo-notifications";
+import { NavigationContainer } from "@react-navigation/native";
+
+// Configura o comportamento das notificações
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
-  const { coordenadas, bairros, loading, error } = useCoordenadas();
-  const [selectedValue, setSelectedValue] = useState<string>("");
-  const [trechos, setTrechos] = useState<Coordenadas | any>(null);
+  const notificationListener = useRef<any>();
+  const responseListener = useRef<any>();
+  const context = useContext(TelemetriaContext);
+
+  if (!context) {
+    throw new Error("App must be used within a TelemetriaProvider");
+  }
+
+  const { setPayload, payload } = context;
+
+  // Função para verificar e solicitar permissões de notificação
+  async function requestNotificationPermissions() {
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status !== "granted") {
+      const { status: newStatus } =
+        await Notifications.requestPermissionsAsync();
+      if (newStatus !== "granted") {
+        alert("Permissão de notificações não concedida");
+        return;
+      }
+    }
+  }
 
   useEffect(() => {
-    setTrechos(coordenadas?.filter((x) => x.bairro === selectedValue));
-  }, [selectedValue]);
+    // Solicita permissões de notificação ao carregar o app
+    requestNotificationPermissions();
 
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+    // Listener para notificação recebida enquanto o app está em primeiro plano
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log("Notificação recebida:", notification);
+        setPayload(notification);
+      });
 
-  if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.error}>Error: {error.message}</Text>
-      </View>
-    );
-  }
+    // Listener para quando o usuário interagir com a notificação
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Interação com a notificação:", response);
+      });
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Escolha um bairro:</Text>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <Picker
-          selectedValue={selectedValue}
-          onValueChange={(itemValue) => setSelectedValue(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item key={""} label={"selecione"} value={null} />
-          {bairros &&
-            bairros.map((b: string, index) => (
-              <Picker.Item key={index} label={b} value={b} />
-            ))}
-        </Picker>
+    return () => {
+      // Remove os listeners ao desmontar o componente
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
-        {trechos && <Text style={styles.label}>Selecione um trecho:</Text>}
-
-        {trechos &&
-          trechos.map((t: Coordenadas, index: number) => (
-            <Card key={index} data={t}></Card>
-          ))}
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <DrawerRoutes />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: "20%",
-  },
-  scrollView: {
-    width: "100%",
-  },
-  scrollContent: {
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  error: {
-    color: "red",
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  picker: {
-    height: 50,
-    width: 200,
-  },
-  selectedText: {
-    marginTop: 20,
-    fontSize: 16,
-  },
-});

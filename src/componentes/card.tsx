@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Coordenadas } from "../interfaces";
+import Button from "./button";
 
 interface CardProps {
   data: Coordenadas;
@@ -20,9 +21,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
         <Text style={styles.cardDescription}>{data.inicio}</Text>
         <Text style={styles.cardTitleBotton}>E</Text>
         <Text style={styles.cardDescription}>{data.fim}</Text>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
-          <Text style={styles.buttonText}>escolher</Text>
-        </TouchableOpacity>
+        <Button trecho={data} />
       </View>
     </View>
   );
