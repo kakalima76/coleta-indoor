@@ -4,7 +4,7 @@ import styles from "../styles/styles"; // Importando os estilos
 import { useNavigation } from "@react-navigation/native";
 import { TelemetriaContext } from "../contextos";
 
-const Login = ({ navigation }) => {
+function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const context = useContext(TelemetriaContext);
   const navigate = useNavigation<any>();
@@ -63,6 +63,6 @@ const Login = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 export default Login;

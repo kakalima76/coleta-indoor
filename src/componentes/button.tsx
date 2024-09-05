@@ -4,15 +4,14 @@ import styles from "../styles/styles";
 import * as Notifications from "expo-notifications";
 import { TelemetriaContext } from "../contextos";
 import { Coordenadas } from "../interfaces";
-import { useNavigation } from "@react-navigation/native";
 
 interface ButtonProps {
   trecho: Coordenadas;
+  navigation: any;
 }
 
-const Button: React.FC<ButtonProps> = ({ trecho }) => {
+const Button: React.FC<ButtonProps> = ({ navigation, trecho }) => {
   const context = useContext(TelemetriaContext);
-  const navigate = useNavigation<any>();
 
   if (!context) {
     throw new Error("Button must be used within a TelemetriaProvider");
@@ -22,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({ trecho }) => {
 
   const handlePressButton = async () => {
     await registerForPushNotificationsAsync();
+    navigation.navigate("confirmar");
   };
 
   async function registerForPushNotificationsAsync() {
@@ -29,12 +29,13 @@ const Button: React.FC<ButtonProps> = ({ trecho }) => {
     if (status !== "granted") {
       alert("Permission for notifications was denied");
       return;
+    } else {
+      console.log(status);
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
     setToken(token);
     setTrechoColeta(trecho);
-    navigate.navigate("sucesso");
   }
 
   return (
