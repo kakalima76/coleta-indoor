@@ -3,11 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import styles from "../styles/styles"; // Importando os estilos
 import { useNavigation } from "@react-navigation/native";
 import { TelemetriaContext } from "../contextos";
+import Constants from "expo-constants";
+const androidVersionCode = Constants.expoConfig?.android?.versionCode || "N/A";
 
-function Login({ navigation }) {
+function Login() {
   const [email, setEmail] = useState("");
   const context = useContext(TelemetriaContext);
-  const navigate = useNavigation<any>();
+  const navigation = useNavigation<any>();
   const [senha, setSenha] = useState("");
 
   if (!context) {
@@ -61,6 +63,7 @@ function Login({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
+      <Text>Version Code: {androidVersionCode}</Text>
     </View>
   );
 }

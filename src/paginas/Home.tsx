@@ -3,6 +3,7 @@ import { Text, ScrollView } from "react-native";
 import styles from "../styles/styles";
 import { useNavigation } from "@react-navigation/native";
 import { TelemetriaContext } from "../contextos";
+import Constants from "expo-constants";
 
 const Home = () => {
   const notificationListener = useRef<any>();

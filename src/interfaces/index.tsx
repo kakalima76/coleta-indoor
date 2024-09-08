@@ -31,6 +31,7 @@ export interface Items {
 export interface ISubscritionExpoNotification {
   roteiroId: string;
   token: string;
+  email: string | null;
 }
 
 export interface NotificationPayload<T = any> {

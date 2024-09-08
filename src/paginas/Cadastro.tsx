@@ -8,7 +8,7 @@ import { Coordenadas } from "../interfaces";
 import Card from "../componentes/card";
 import styles from "../styles/styles";
 
-const Cadastro = ({ navigation }) => {
+const Cadastro = () => {
   const { coordenadas, bairros, loading, error } = useCoordenadas();
   const [selectedBairro, setSelectedBairro] = useState<string>("");
   const [selectedLocal, setSelectedLocal] = useState<string>("");
@@ -103,7 +103,7 @@ const Cadastro = ({ navigation }) => {
         {trechos &&
           !!locais.length &&
           trechos.map((t: Coordenadas, index: number) => (
-            <Card key={index} data={t} navigation={navigation}></Card>
+            <Card key={index} data={t}></Card>
           ))}
       </ScrollView>
       <StatusBar style="auto" />

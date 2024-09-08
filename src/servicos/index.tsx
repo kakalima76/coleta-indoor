@@ -46,7 +46,6 @@ export class RealTimeDatabaseSubscriptionService
     const obj: { [key: string]: ISubscritionExpoNotification } = {};
     const uuid = encodeEmailToNumericCode(email);
     obj[uuid] = subscription;
-    console.log(email);
 
     // Configuração da requisição Axios para enviar o patch ao Firebase
     const config: AxiosRequestConfig = {
@@ -57,7 +56,7 @@ export class RealTimeDatabaseSubscriptionService
 
     try {
       await axios(config);
-      console.log("Subscription added successfully");
+      alert("Inscrição realizada com sucesso.");
     } catch (err: any) {
       console.error("Failed to add subscription:", err.message);
     }

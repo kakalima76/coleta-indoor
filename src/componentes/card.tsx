@@ -5,14 +5,9 @@ import Button from "./button";
 
 interface CardProps {
   data: Coordenadas;
-  navigation: any;
 }
 
-const handlePress = () => {
-  console.log("Botão pressionado");
-};
-
-const Card: React.FC<CardProps> = ({ navigation, data }) => {
+const Card: React.FC<CardProps> = ({ data }) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
@@ -22,7 +17,7 @@ const Card: React.FC<CardProps> = ({ navigation, data }) => {
         <Text style={styles.cardDescription}>{data.inicio}</Text>
         <Text style={styles.cardTitleBotton}>E</Text>
         <Text style={styles.cardDescription}>{data.fim}</Text>
-        <Button trecho={data} navigation={navigation} />
+        <Button trecho={data} />
       </View>
     </View>
   );

@@ -46,14 +46,14 @@ export default function App() {
     // Listener para notificação recebida enquanto o app está em primeiro plano
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Notificação recebida:", notification);
+        alert(`Notificação recebida: ${notification}`);
         setPayload(notification);
       });
 
     // Listener para quando o usuário interagir com a notificação
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Interação com a notificação:", response);
+        alert(`Interação com a notificação: ${response}`);
       });
 
     return () => {

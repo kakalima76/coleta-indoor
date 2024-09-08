@@ -27,6 +27,7 @@ const ButtonConfirmar = () => {
     const _subscription: ISubscritionExpoNotification = {
       token,
       roteiroId: trechoColeta!.id,
+      email: user,
     };
     await service.add(_subscription, user || "");
     navigation.navigate("sucesso"); // Navegando para a tela "sucesso"
