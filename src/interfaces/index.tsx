@@ -4,12 +4,12 @@ export interface Coordenadas {
   dias: string;
   distancia: number;
   fim: string;
-  fim_previsto: string;
+  fim_timestamp: string;
   gerencia: string;
   hora_data_veiculo: string;
   id: string;
   inicio: string;
-  inicio_previsto: string;
+  inicio_timestamp: string;
   lado: string;
   lat_veiculo: string;
   latlngInicial: string;
@@ -32,6 +32,7 @@ export interface ISubscritionExpoNotification {
   roteiroId: string;
   token: string;
   email: string | null;
+  uid: string | null;
 }
 
 export interface NotificationPayload<T = any> {
@@ -54,4 +55,29 @@ export interface NotificationPayload<T = any> {
       type: "push" | "timeInterval" | "location" | "calendar" | "local";
     };
   };
+}
+
+export interface IRoteiro {
+  atualizacao: string;
+  bairro: string;
+  dias: number[];
+  fim: string;
+  fim_timestamp: number;
+  id: string;
+  inicio: string;
+  inicio_timestamp: number;
+  lado: string;
+  lat: number;
+  lat_veiculo: string;
+  lng: number;
+  lng_veiculo: string;
+  logradouro: string;
+  placa: string;
+  prefixo: string;
+  roteiro: string;
+}
+
+export interface Coords {
+  latitude: number;
+  longitude: number;
 }

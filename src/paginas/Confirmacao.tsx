@@ -10,8 +10,14 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles/styles";
 import { TelemetriaContext } from "../contextos";
 import ButtonConfirmar from "../componentes/buttonConfirmar";
+import moment from 'moment-timezone';
 
-function getDiasColeta(lista: string) {
+export function formatTimestampToSaoPaulo(timestamp: number): string {
+  const date = moment.tz(timestamp, "America/Sao_Paulo");
+  return date.format("DD:MM:YYYY HH:mm:ss");
+}
+
+export function getDiasColeta(aux: any) {
   const diasDaSemana: string[] = [
     "domingo",
     "segunda",
@@ -23,7 +29,6 @@ function getDiasColeta(lista: string) {
   ];
   const response: string[] = [];
 
-  const aux = lista.split(",");
 
   for (let dia of aux) {
     response.push(diasDaSemana[Number(dia)]);
@@ -52,8 +57,8 @@ const Confirmar = () => {
       <Text style={styles.label}>
         Dias: {`${getDiasColeta(trechoColeta?.dias || "")}`}
       </Text>
-      <Text style={styles.label}>Início: {trechoColeta?.inicio_previsto}</Text>
-      <Text style={styles.label}>Término: {trechoColeta?.fim_previsto}</Text>
+      <Text style={styles.label}>Início: {formatTimestampToSaoPaulo(Number(trechoColeta?.inicio_timestamp))}</Text>
+      <Text style={styles.label}>Término: {formatTimestampToSaoPaulo(Number(trechoColeta?.fim_timestamp))}</Text>
 
       <View style={styles.checkboxContainer}>
         <TouchableOpacity

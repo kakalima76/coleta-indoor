@@ -21,15 +21,19 @@ const ButtonConfirmar = () => {
     throw new Error("Button must be used within a TelemetriaProvider");
   }
 
-  const { token, trechoColeta, user } = context;
+  const { token, trechoColeta, user, uid, setTrechoColeta } = context;
 
   const handlePressButton = async () => {
     const _subscription: ISubscritionExpoNotification = {
       token,
       roteiroId: trechoColeta!.id,
       email: user,
+      uid
     };
-    await service.add(_subscription, user || "");
+
+    await service.add(_subscription, user || ""); 
+    setTrechoColeta(null)
+
     navigation.navigate("sucesso"); // Navegando para a tela "sucesso"
   };
 
